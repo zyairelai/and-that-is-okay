@@ -71,12 +71,24 @@
     // Start with the first image
     if (slideA) {
       slideA.style.backgroundImage = `url('${verifiedImages[0]}')`;
+      slideA.style.zIndex = '1';
       slideA.classList.add('slide-active');
     }
+    if (slideB) {
+      slideB.style.zIndex = '0';
+    }
 
-    // Begin cycling if we have more than 1 image
+    // Begin cycling if we have more than 1 image (cross-fade every 7.5 seconds)
     if (verifiedImages.length > 1) {
-      setInterval(nextSlide, 10000); // Cross-fade every 10 seconds
+      setInterval(nextSlide, 7500);
+    }
+
+    // Allow user to click the photo counter in the corner to manually trigger next picture
+    if (memoryIndicator) {
+      memoryIndicator.style.pointerEvents = 'auto';
+      memoryIndicator.style.cursor = 'pointer';
+      memoryIndicator.title = 'Click to switch photo';
+      memoryIndicator.addEventListener('click', nextSlide);
     }
   }
 
@@ -96,10 +108,19 @@
     const currentSlideEl = activeSlide === 'a' ? slideA : slideB;
     const nextSlideEl = activeSlide === 'a' ? slideB : slideA;
 
-    // Set background of the inactive slide and transition
+    // Bring incoming slide to top layer
+    nextSlideEl.style.zIndex = '2';
+    currentSlideEl.style.zIndex = '1';
+
+    // Set background of the incoming slide and smoothly fade it in
     nextSlideEl.style.backgroundImage = `url('${nextImgSrc}')`;
     nextSlideEl.classList.add('slide-active');
-    currentSlideEl.classList.remove('slide-active');
+
+    // After fade transition (2.8s), reset previous slide
+    setTimeout(() => {
+      currentSlideEl.classList.remove('slide-active');
+      currentSlideEl.style.zIndex = '0';
+    }, 2800);
 
     activeSlide = activeSlide === 'a' ? 'b' : 'a';
     updateIndicator();

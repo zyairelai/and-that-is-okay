@@ -1,0 +1,590 @@
+/* ============================================================
+   AND THAT IS OKAY - CINEMATIC POETRY STYLING
+   ============================================================ */
+
+:root {
+  --bg-deep: #07080a;
+  --text-main: #e8eaed;
+  --text-muted: #9aa0a6;
+  --text-whisper: #c4c7c5;
+  --text-refrain: #f8f9fa;
+  --accent-gold: #e2c08d;
+  --accent-glow: rgba(226, 192, 141, 0.18);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(9, 11, 15, 0.72);
+  --glass-blur: 16px;
+  --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+}
+
+/* ============================================================
+   BACKGROUND SLIDESHOW & ATMOSPHERIC EFFECTS
+   ============================================================ */
+
+#slideshow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.slide {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+  will-change: transform, opacity;
+}
+
+.slide.slide-active {
+  opacity: 0.38;
+  animation: kenburns 16s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.08) translate(-1%, -1.5%);
+  }
+}
+
+/* Atmospheric vignette */
+.overlay-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(7, 8, 10, 0.45) 0%,
+    rgba(7, 8, 10, 0.78) 60%,
+    rgba(5, 6, 8, 0.95) 100%
+  );
+  z-index: 1;
+}
+
+/* Subtle cinematic film grain overlay */
+.overlay-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 2;
+  pointer-events: none;
+}
+
+#particles-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ============================================================
+   ENTRY GATE OVERLAY
+   ============================================================ */
+
+.entry-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(14, 17, 23, 0.96) 0%, rgba(6, 7, 9, 0.99) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.4s;
+  padding: 24px;
+  text-align: center;
+}
+
+.entry-gate.dismissed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.entry-content {
+  max-width: 480px;
+  animation: fadeInDown 1.8s ease-out;
+}
+
+.entry-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+  opacity: 0.85;
+}
+
+.entry-title {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: #fff;
+  margin-bottom: 16px;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.15);
+}
+
+.entry-instruction {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  letter-spacing: 0.05em;
+}
+
+.enter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 34px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(226, 192, 141, 0.35);
+  border-radius: 40px;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.enter-btn:hover {
+  background: rgba(226, 192, 141, 0.12);
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(226, 192, 141, 0.2);
+}
+
+.enter-btn .btn-icon {
+  display: flex;
+  align-items: center;
+  color: var(--accent-gold);
+}
+
+/* ============================================================
+   AMBIENT AUDIO CONTROLLER
+   ============================================================ */
+
+.audio-control {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 100;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.audio-control.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+.audio-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  background: rgba(14, 17, 24, 0.82);
+  border: 1px solid var(--border-subtle);
+  border-radius: 30px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.audio-btn:hover {
+  color: #fff;
+  border-color: rgba(226, 192, 141, 0.3);
+  background: rgba(20, 24, 32, 0.9);
+}
+
+.sound-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 14px;
+}
+
+.sound-bars .bar {
+  width: 2px;
+  background: var(--accent-gold);
+  border-radius: 1px;
+  transition: height 0.2s ease;
+  height: 3px;
+}
+
+.sound-bars.playing .bar:nth-child(1) {
+  animation: pulseBar 1.2s ease-in-out infinite alternate;
+}
+.sound-bars.playing .bar:nth-child(2) {
+  animation: pulseBar 0.8s ease-in-out 0.2s infinite alternate;
+}
+.sound-bars.playing .bar:nth-child(3) {
+  animation: pulseBar 1.4s ease-in-out 0.4s infinite alternate;
+}
+.sound-bars.playing .bar:nth-child(4) {
+  animation: pulseBar 1.0s ease-in-out 0.1s infinite alternate;
+}
+
+@keyframes pulseBar {
+  0% { height: 3px; }
+  100% { height: 14px; }
+}
+
+/* ============================================================
+   PHOTO COUNTER INDICATOR
+   ============================================================ */
+
+.memory-indicator {
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.indicator-icon {
+  color: var(--accent-gold);
+  font-size: 0.65rem;
+}
+
+/* ============================================================
+   POETRY CONTENT & TYPOGRAPHY
+   ============================================================ */
+
+.poem-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  padding: 120px 24px 180px;
+  min-height: 100vh;
+}
+
+.poem-container {
+  width: 100%;
+  max-width: 680px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 70px 54px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.poem-section {
+  margin-bottom: 60px;
+}
+
+.section-november {
+  margin-top: 80px;
+  padding-top: 50px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Chapter Headers */
+.date-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.date-tag {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+.date-title {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.header-divider {
+  width: 44px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  margin: 0 auto;
+}
+
+/* Stanzas & Verses */
+.stanza {
+  margin-bottom: 34px;
+}
+
+.stanza:last-child {
+  margin-bottom: 0;
+}
+
+.verse {
+  font-family: var(--font-serif);
+  font-size: 1.28rem;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-main);
+  letter-spacing: 0.015em;
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+/* Stylistic nuances matching poem emotion */
+.verse em {
+  font-style: italic;
+  font-family: var(--font-serif);
+  color: var(--text-whisper);
+}
+
+.verse.quote {
+  padding-left: 2px;
+  color: #f1f3f4;
+}
+
+.verse.whisper em {
+  color: #b0b4b8;
+  font-size: 1.26rem;
+  letter-spacing: 0.02em;
+}
+
+/* The Repeated Refrains */
+.verse.refrain {
+  margin-top: 14px;
+  margin-bottom: 8px;
+}
+
+.verse.refrain strong {
+  font-weight: 600;
+  color: var(--text-refrain);
+  letter-spacing: 0.03em;
+  position: relative;
+  display: inline-block;
+}
+
+.verse.strong-refrain {
+  margin-top: 10px;
+}
+
+.verse.strong-refrain strong {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Standalone Accent Verses */
+.verse.verse-accent {
+  font-size: 1.34rem;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+/* Final Stanza Climax */
+.stanza-final {
+  margin-top: 40px;
+}
+
+.final-refrain {
+  margin-top: 22px;
+}
+
+.final-refrain strong {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.ultimate-refrain {
+  margin-top: 6px;
+}
+
+.ultimate-refrain strong {
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.22);
+}
+
+/* Footer Section */
+.poem-footer {
+  text-align: center;
+  margin-top: 80px;
+  padding-top: 36px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.07);
+}
+
+.end-symbol {
+  color: var(--accent-gold);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+.end-credits {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+/* ============================================================
+   SCROLL REVEAL ANIMATIONS
+   ============================================================ */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN (Mobile, Tablet, Desktop)
+   ============================================================ */
+
+@media (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+
+  .poem-wrapper {
+    padding: 60px 16px 130px;
+  }
+
+  .poem-container {
+    padding: 44px 24px;
+    border-radius: 14px;
+  }
+
+  .entry-title {
+    font-size: 2.2rem;
+  }
+
+  .date-title {
+    font-size: 1.85rem;
+  }
+
+  .verse {
+    font-size: 1.16rem;
+    line-height: 1.8;
+  }
+
+  .audio-control {
+    bottom: 18px;
+    right: 18px;
+  }
+
+  .memory-indicator {
+    bottom: 22px;
+    left: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .poem-container {
+    padding: 36px 18px;
+  }
+
+  .audio-label {
+    display: none;
+  }
+
+  .audio-btn {
+    padding: 10px 12px;
+  }
+
+  .verse {
+    font-size: 1.12rem;
+    line-height: 1.78;
+  }
+}
+

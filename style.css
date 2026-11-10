@@ -55,6 +55,7 @@ body {
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+  animation: unifiedDrift 20s ease-in-out infinite alternate;
 }
 
 .slide {
@@ -68,22 +69,20 @@ body {
   background-repeat: no-repeat;
   opacity: 0;
   transition: opacity 2.8s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: scale(1);
-  will-change: transform, opacity;
+  will-change: opacity;
   filter: brightness(0.88) contrast(1.05);
 }
 
 .slide.slide-active {
   opacity: 0.85;
-  animation: kenburns 16s ease-in-out infinite alternate;
 }
 
-@keyframes kenburns {
+@keyframes unifiedDrift {
   0% {
     transform: scale(1) translate(0, 0);
   }
   100% {
-    transform: scale(1.04) translate(-0.8%, -1%);
+    transform: scale(1.03) translate(-0.5%, -0.8%);
   }
 }
 
